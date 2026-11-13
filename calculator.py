@@ -1,22 +1,19 @@
 def get_operands():
-    while True:
-        try:
-            a = float(input("Please input a value for A: ")) #clean up text
-            break
-        except ValueError:
-            print("Please enter a floating number.")
+    a = input("Please input a value for A: ") #clean up text
+    a = validate_float(a)
 
-    while True:
-        try:
-            b = float(input("Please input a value for B: ")) #clean up text
-            break
-        except ValueError:
-            print("Please enter a floating number.")
-
+    b = input("Please input a value for B: ") #clean up text
+    b = validate_float(b)
     return a, b
 
-#def validate_number(num, type):
-
+def validate_float(num):
+    while True:
+        try:
+            num = float(num)
+            break
+        except ValueError:
+            num = input("Please enter a valid number: ")
+    return num
 
 
 def add(a, b):
