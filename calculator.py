@@ -1,19 +1,14 @@
 def get_operands():
-    a = input("Please input a value for A: ") #clean up text
-    a = validate_float(a)
-
-    b = input("Please input a value for B: ") #clean up text
-    b = validate_float(b)
+    a = validate_float(input("Please input a value for A: "))
+    b = validate_float(input("Please input a value for B: "))
     return a, b
 
 def validate_float(num):
     while True:
         try:
-            num = float(num)
-            break
+            return float(num)
         except ValueError:
             num = input("Please enter a valid number: ")
-    return num
 
 
 def add(a, b):
@@ -22,11 +17,17 @@ def add(a, b):
 def subtract(a, b):
     return a - b
 
+
+def validate_divide_by_0(b):
+    while True:
+        if b == 0:
+           print("Cannot divide by 0.")
+           b = validate_float(input("Please enter a valid number: "))
+        else:
+            return b
+
 def divide(a, b):
-    if b == 0:
-        raise ValueError("Cannot divide by 0")
-    else:
-        return a / b
+    return a / b
 
 def multiply(a, b):
     return a * b
@@ -47,7 +48,7 @@ if __name__ == "__main__":
 
         choice = -1
 
-        while choice < 1 or choice > len(operations):
+        while choice not in operations:
             try:
                 choice = int(input('What operation would you like to compute?\n'
                                '1. Addition\n'
@@ -65,5 +66,8 @@ if __name__ == "__main__":
             break
 
         a, b = get_operands()
+
+        if operations[choice] == divide:
+            b = validate_divide_by_0(b)
 
         print(operations[choice](a, b))
