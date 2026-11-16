@@ -10,6 +10,18 @@ def validate_float(num):
         except ValueError:
             num = input("Please enter a valid number: ")
 
+def perform_math(operations):
+    expression = input("Expression: ")
+    pieces = expression.split(" ")
+    total = validate_float(pieces[0])
+    for piece in pieces[1:]:
+        if piece in operations:
+            operation = piece
+        elif piece not in operations:
+            operand = validate_float(piece)
+            total = operations[operation](total, operand)
+    print(total)
+
 
 def add(a, b):
     return a + b
@@ -37,37 +49,31 @@ if __name__ == "__main__":
     running = True
 
     operations = {
-        1: add,
-        2: subtract,
-        3: divide,
-        4: multiply,
-        5: exit
+        "+": add,
+        "-": subtract,
+        "/": divide,
+        "*": multiply
+    }
+    choices = {
+        1: "Math",
+        2: exit
     }
 
     while running:
-
         choice = -1
-
-        while choice not in operations:
+        while choice not in choices:
             try:
-                choice = int(input('What operation would you like to compute?\n'
-                               '1. Addition\n'
-                               '2. Subtraction\n'
-                               '3. Division\n'
-                               '4. Multiplication\n'
-                               '5. Exit\n'))
+                choice = int(input('\n'
+                               '1. Perform math\n'
+                               '2. Exit\n'))
 
             except ValueError:
                 print("Please print a valid integer in range.\n")
                 continue
 
-        if operations[choice] == exit:
+        if choices[choice] == exit:
             running = False
             break
 
-        a, b = get_operands()
-
-        if operations[choice] == divide:
-            b = validate_divide_by_0(b)
-
-        print(operations[choice](a, b))
+        elif choices[choice] == "Math":
+            perform_math(operations)
