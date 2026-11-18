@@ -1,3 +1,5 @@
+import re
+
 def get_operands():
     a = validate_float(input("Please input a value for A: "))
     b = validate_float(input("Please input a value for B: "))
@@ -9,18 +11,6 @@ def validate_float(num):
             return float(num)
         except ValueError:
             num = input("Please enter a valid number: ")
-
-def perform_math(operations):
-    expression = input("Expression: ")
-    pieces = expression.split(" ")
-    total = validate_float(pieces[0])
-    for piece in pieces[1:]:
-        if piece in operations:
-            operation = piece
-        elif piece not in operations:
-            operand = validate_float(piece)
-            total = operations[operation](total, operand)
-    print(total)
 
 
 def add(a, b):
@@ -76,4 +66,17 @@ if __name__ == "__main__":
             break
 
         elif choices[choice] == "Math":
-            perform_math(operations)
+            expression = input("Expression: ")
+            pieces = re.split(r"([+\-/*])",expression)
+            total = validate_float(pieces[0])
+            expecting_operator = True
+            for piece in pieces[1:]:
+                if piece in operations:
+                    operation = piece
+                    expecting_operator = not expecting_operator
+                elif expecting_operator == False:
+                    operand = validate_float(piece)
+                    total = operations[operation](total, operand)
+                    expecting_operator = not expecting_operator
+            print(total)
+
