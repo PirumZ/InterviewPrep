@@ -7,9 +7,9 @@ def get_operands():
 
 def validate_float(num):
     while True:
-        try:
+        if re.fullmatch(r"[0-9]*\.?[0-9]+", num):
             return float(num)
-        except ValueError:
+        else:
             num = input("Please enter a valid number: ")
 
 
@@ -68,15 +68,14 @@ if __name__ == "__main__":
         elif choices[choice] == "Math":
             expression = input("Expression: ")
             pieces = re.split(r"([+\-/*])",expression)
-            total = validate_float(pieces[0])
+            total = validate_float(pieces[0].strip())
             expecting_operator = True
             for piece in pieces[1:]:
                 if piece in operations:
                     operation = piece
                     expecting_operator = not expecting_operator
                 elif expecting_operator == False:
-                    operand = validate_float(piece)
+                    operand = validate_float(piece.strip())
                     total = operations[operation](total, operand)
                     expecting_operator = not expecting_operator
             print(total)
-
