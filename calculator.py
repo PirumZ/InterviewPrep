@@ -68,14 +68,15 @@ if __name__ == "__main__":
         elif choices[choice] == "Math":
             expression = input("Expression: ")
             pieces = re.split(r"([+\-/*])",expression)
-            total = validate_float(pieces[0].strip())
+            pieces = [piece.strip() for piece in pieces]
+            total = validate_float(pieces[0])
             expecting_operator = True
             for piece in pieces[1:]:
                 if piece in operations:
                     operation = piece
                     expecting_operator = not expecting_operator
                 elif expecting_operator == False:
-                    operand = validate_float(piece.strip())
+                    operand = validate_float(piece)
                     total = operations[operation](total, operand)
                     expecting_operator = not expecting_operator
             print(total)
